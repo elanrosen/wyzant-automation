@@ -1,0 +1,7 @@
+# Ignore .config/profile folder
+.config/profile/
+.myenv
+# Ignore .env file
+.env
+demo_video_2.mov
+demo_video.mov
