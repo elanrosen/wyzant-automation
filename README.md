@@ -1,4 +1,4 @@
-# Project README: Automated Tutor Job Application Processor
+# Automated Tutor Job Application for Wyzant
 
 ## Overview
 This Python project automates the process of applying for tutoring jobs on the Wyzant platform. It leverages the Selenium library for web scraping and browser automation, and the OpenAI API for generating personalized job application messages. The program's primary functionality includes browsing job listings, evaluating each job based on predefined criteria, and automatically submitting applications where suitable.
