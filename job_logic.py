@@ -5,6 +5,14 @@ from openai_client import generate_openai_message
 
 class JobProcessor:
     def __init__(self, driver, openai_client, mode):
+        """
+        Initialize the JobProcessor instance.
+
+        Args:
+            driver: Selenium WebDriver for web automation.
+            openai_client: Client for interacting with the OpenAI API.
+            mode (str): The mode of operation (e.g., "single-page" or "multi-page").
+        """
         self.driver = driver
         self.openai_client = openai_client
         self.click_index = 0
@@ -15,6 +23,17 @@ class JobProcessor:
         self.mode = mode
 
     def process_job(self, current_url, next_page_string, num_pages):
+        """
+        Process a job listing from a web page.
+
+        Args:
+            current_url (str): The URL of the current job listing page.
+            next_page_string (str): The base URL string for navigating to the next page.
+            num_pages (int): The total number of pages to process.
+
+        Returns:
+            bool: True if the job was processed, False if no jobs are found or an error occurred.
+        """
         try:
             rate_found = True
             job_links = self.driver.find_elements(By.CLASS_NAME, "job-details-link")
@@ -93,7 +112,7 @@ class JobProcessor:
             if ("excel" in job_subject.lower() or "excel" in job_description.lower()) and not rate_found:
                 inputted_rate = 29
             self.jobs_processed += 1
-            if True:
+            if planning_to_submit:
                 self.jobs_submitted += 1
                 return self.submit_job(poster_name, job_subject, job_description, inputted_rate, current_url)
             else:
@@ -117,6 +136,19 @@ class JobProcessor:
             return True
 
     def submit_job(self, poster_name, job_subject, job_description, inputted_rate, current_url):
+        """
+        Submit a job application with generated content.
+
+        Args:
+            poster_name (str): Name of the job poster.
+            job_subject (str): Subject of the job listing.
+            job_description (str): Description of the job listing.
+            inputted_rate (int): The rate to input in the job application.
+            current_url (str): The URL of the current job listing page.
+
+        Returns:
+            bool: True if the job was successfully submitted, False otherwise.
+        """
         try:
             print("Proceeding with Job")
             print_separator("-", 40)
@@ -135,9 +167,9 @@ class JobProcessor:
             hourly_rate_input.send_keys(inputted_rate)
 
             submit_application_button = self.driver.find_element(By.XPATH, '//*[@id="job_application_form"]/input[5]')
-            # submit_application_button.click()
-            self.driver.get(current_url)
-            self.click_index += 1
+            submit_application_button.click()
+            # self.driver.get(current_url)
+            # self.click_index += 1
             print_separator("-", 40)
             print("Submitted!")
             return True
@@ -146,6 +178,15 @@ class JobProcessor:
             print("Exception while submitting job: " + str(e))
 
     def skip_job(self, current_url):
+        """
+        Skip processing the current job listing and go to the next one.
+
+        Args:
+            current_url (str): The URL of the current job listing page.
+
+        Returns:
+            bool: True if the job was skipped successfully, False otherwise.
+        """
         try:
             print("SKIPPING JOB")
             self.click_index += 1

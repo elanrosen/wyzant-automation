@@ -1,66 +1,49 @@
-# Wyzant Job Application Bot
+# Project README: Automated Tutor Job Application Processor
 
-The Wyzant Job Application Bot is a sophisticated Python-based tool designed to streamline the process of applying for tutoring positions on the Wyzant platform. It leverages Selenium for efficient web scraping and automation, incorporates the cutting-edge capabilities of OpenAI's GPT-4 for crafting personalized application messages, and utilizes MySQL for robust database management.
+## Overview
+This Python project automates the process of applying for tutoring jobs on the Wyzant platform. It leverages the Selenium library for web scraping and browser automation, and the OpenAI API for generating personalized job application messages. The program's primary functionality includes browsing job listings, evaluating each job based on predefined criteria, and automatically submitting applications where suitable.
 
-## Key Features
-
-- **Automated Navigation**: Effortlessly traverses through Wyzant's job listings.
-- **Advanced Filtering**: Selectively applies to jobs based on user-defined criteria such as rate, student grade level, and subject area.
-- **Personalized Messaging**: Utilizes OpenAI's GPT-4 to generate unique and engaging application messages for each job.
-- **Efficient Application Submission**: Automatically applies to jobs that meet the specified criteria.
-
-## System Requirements
-
-- Python version 3.6 or higher
+## Requirements
+- Python 3.x
 - Selenium WebDriver
-- OpenAI GPT-4 API
-- python-decouple for environment management
-- MySQL Connector Python for database interactions
+- Python-decouple for configuration management
+- OpenAI API Key for generating personalized messages
 
-## Installation and Setup
+## Configuration
+Before running the script, set up the following configurations in your environment variables:
+- `OPENAI_API_KEY`: Your OpenAI API key.
+- `USER_PROFILE_DIR`: The path to your Chrome user data directory.
 
-1. **Repository Cloning**:
-   ```
-   git clone [repository-url]
-   ```
-2. **Dependency Installation**:
-   Execute the following command to install the required Python packages:
+## Installation
+1. Install the required Python packages:
    ```bash
-   pip install selenium openai python-decouple mysql-connector-python
+   pip install selenium python-decouple openai
    ```
-3. **Environment Configuration**:
-   Set up your `.env` file with the necessary credentials:
-   ```env
-   OPENAI_API_KEY=your_openai_api_key
-   USER_PROFILE_DIR=your_chrome_user_data_directory
-   ```
-4. **Execution**:
-   Run the script using Python:
-   ```bash
-   python wyzant_bot.py
-   ```
+2. Download the appropriate ChromeDriver based on your Chrome version and add it to your PATH.
 
-## Ethical Use Reminder
+## Usage
+1. Set your OpenAI API key and Chrome user profile directory in environment variables.
+2. Run the script to start the job application process.
+3. The script navigates through the job listings on Wyzant, evaluates them, and applies based on the set criteria.
 
-This script is developed solely for educational purposes. Users must adhere to Wyzant's terms of service and OpenAI's use case policy. Responsible and ethical usage is strongly encouraged.
+## How it Works
+1. **Browser Initialization**: Creates a Chrome WebDriver instance with custom options.
+2. **Job Processing**: Navigates to the Wyzant job listings page and processes each job.
+3. **Job Evaluation**: Jobs are evaluated based on the rate, subject, and other criteria.
+4. **Application Submission**: If a job meets the criteria, the script uses OpenAI's API to generate a personalized application message and submits the application.
+5. **Error Handling**: Includes robust error handling for web scraping and network issues.
 
-## Script Overview
+## Classes and Functions
+- `JobProcessor`: Main class that handles job processing, evaluation, and application submission.
+- `generate_openai_message`: Function to generate personalized messages using OpenAI's API.
+- `approximate_function`, `print_separator`, `print_job_info`: Helper functions for various tasks.
 
-The script primarily consists of the following components:
+## Limitations
+- The script is specifically tailored for the Wyzant platform and may not work with other websites.
+- Requires constant internet connection and depends on the structure of the Wyzant website, which may change.
 
-- **Selenium WebDriver Configuration**: Sets up the Chrome browser for automation.
-- **Job Application Logic**: Navigates through job listings, applies filters, and selects jobs based on predefined criteria.
-- **Message Generation with OpenAI GPT-4**: Crafts personalized application messages using OpenAI's advanced language model.
-- **Application Submission Process**: Automates the filling and submission of application forms.
-- **Exception Handling**: Includes robust error and exception management to ensure smooth operation.
-- **Database Integration**: Utilizes MySQL for storing and retrieving application data.
+## Contribution
+Contributions are welcome. Please fork the repository and submit a pull request for any enhancements.
 
-## Script Highlights
-
-- `approximate_function(x)`: Calculates an appropriate rate based on various factors.
-- `print_separator(char, length)`: Prints a separator line for better readability in console output.
-- `print_job_info(title, info)`: Displays job details in a structured format.
-
-## Usage Statistics
-
-At the end of the script, it outputs the total number of jobs submitted and skipped, providing insights into the script's activity and efficiency.
+## License
+This project is open-source and available under the MIT License.
