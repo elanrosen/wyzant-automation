@@ -2,7 +2,7 @@ from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from helpers import approximate_function, print_separator, print_job_info
 from openai_client import generate_openai_message
-
+import time
 class JobProcessor:
     def __init__(self, driver, openai_client, mode):
         """
@@ -21,6 +21,8 @@ class JobProcessor:
         self.jobs_skipped = 0
         self.jobs_submitted = 0
         self.mode = mode
+        self.click_counter = 0  # Initialize the click counter
+
 
     def process_job(self, current_url, next_page_string, num_pages):
         """
@@ -35,12 +37,26 @@ class JobProcessor:
             bool: True if the job was processed, False if no jobs are found or an error occurred.
         """
         try:
+            self.click_counter += 1
             rate_found = True
             job_links = self.driver.find_elements(By.CLASS_NAME, "job-details-link")
 
             if len(job_links) == 0:
-                print("No jobs found: exiting")
-                return False
+                if self.mode == "multi-page":
+                    print("No jobs found: exiting")
+                    return False
+                elif self.mode == "single-page":
+                    self.driver.back()
+                    print("No jobs found: sleeping")
+                    return True
+                        # Logic to decide click_index based on click_counter
+            if self.mode == "single-page":
+                if self.click_counter % 5 == 2 or self.click_counter % 7 == 6:
+                    self.click_index = 1
+                elif self.click_counter % 11 == 9:
+                    self.click_index = 2
+                else:
+                    self.click_index = 0
 
             job_links[self.click_index].click()
 
@@ -96,7 +112,7 @@ class JobProcessor:
             planning_to_submit = True
             if student_grade_level == "High School":
                 planning_to_submit = True
-            elif recommended_rate > 55:
+            elif recommended_rate > 60:
                 if student_grade_level == "Adult" or student_grade_level == "Graduate":
                     planning_to_submit = False
                 else:
@@ -110,7 +126,7 @@ class JobProcessor:
                 planning_to_submit = False
 
             if ("excel" in job_subject.lower() or "excel" in job_description.lower()) and not rate_found:
-                inputted_rate = 29
+                inputted_rate = 34
             self.jobs_processed += 1
             if planning_to_submit:
                 self.jobs_submitted += 1

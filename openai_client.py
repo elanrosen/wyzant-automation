@@ -8,6 +8,19 @@ def create_openai_client():
     return OpenAI(api_key=OPENAI_API_KEY)
 
 def generate_openai_message(client, poster_name, job_subject, job_description):
+    """
+    Generates an OpenAI message using the GPT-3.5 Turbo model.
+
+    Args:
+        client (OpenAI.ChatCompletion): The OpenAI ChatCompletion client.
+        poster_name (str): The name of the job poster.
+        job_subject (str): The subject of the job posting.
+        job_description (str): The description of the job posting.
+
+    Returns:
+        str: The generated message.
+
+    """
     system_message = """"
             You are to help me draft intro messages to potential tutoring clients. I will provide you with a job posting description and client name, and you should generate a message greeting them, and mention the fact I have plenty of experience.
 
@@ -23,7 +36,7 @@ def generate_openai_message(client, poster_name, job_subject, job_description):
             Sometimes the job posting will be for a parent looking for help for their child. In this case, recognize that in your response.
             Sometimes the job posting will mention an introductory meeting. In this case, mention you're available for an introductory meeting.
             Sometimes the job posting will have additional information in the description. In this case, make sure to mention you're familiarity with any additional technologies mentioned.
-
+            
             """
 
     prompt = f"Job Posting: \n Name: {poster_name}\n Subject: {job_subject}\n Description: {job_description}"
