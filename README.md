@@ -1,4 +1,4 @@
-# Automated Tutor Job Application for Wyzant
+# Automated Tutoring Applications on Wyzant
 
 ## Overview
 This Python project automates the process of applying for tutoring jobs on the Wyzant platform. It leverages the Selenium library for web scraping and browser automation, and the OpenAI API for generating personalized job application messages. The program's primary functionality includes browsing job listings, evaluating each job based on predefined criteria, and automatically submitting applications where suitable.
@@ -26,12 +26,34 @@ Before running the script, set up the following configurations in your environme
 2. Run the script to start the job application process.
 3. The script navigates through the job listings on Wyzant, evaluates them, and applies based on the set criteria.
 
-## How it Works
-1. **Browser Initialization**: Creates a Chrome WebDriver instance with custom options.
-2. **Job Processing**: Navigates to the Wyzant job listings page and processes each job.
-3. **Job Evaluation**: Jobs are evaluated based on the rate, subject, and other criteria.
-4. **Application Submission**: If a job meets the criteria, the script uses OpenAI's API to generate a personalized application message and submits the application.
-5. **Error Handling**: Includes robust error handling for web scraping and network issues.
+## How Job Processing Works
+The `JobProcessor` class in `job_logic.py` is responsible for processing job listings. Here's how it works:
+
+1. **Browser Initialization**: The script initializes a Chrome WebDriver instance with custom options to interact with the Wyzant website.
+
+2. **Job Processing**: The script navigates to the Wyzant job listings page and processes each job one by one.
+
+3. **Job Evaluation**: Jobs are evaluated based on various criteria, including the recommended rate, subject, and other factors. The evaluation criteria include:
+
+    - **Recommended Rate**: The script checks the recommended rate for the job, and if available, passess it through a rate calculator function to decide my specified rate for the job.
+    
+    - **Student Grade Level**: It considers the student's grade level to determine whether the job is suitable.
+
+    - **Job Description and Subject**: The script also analyzes the job description and subject to decide whether the job is suitable.
+
+4. **Application Submission**: If a job meets the criteria, the script uses OpenAI's API to generate a personalized application message. It also allows for inputting a rate for the application. Once the message and rate are set, the script submits the application.
+
+5. **Error Handling**: The script includes robust error handling for web scraping and network issues. It accounts for cases where no jobs are found on a page, and it can handle exceptions gracefully.
+
+## Additional Details
+- The script employs a click index to determine which job listing to click on. It changes the click index periodically to avoid a repetitive pattern.
+
+- The script handles both single-page and multi-page modes. In single-page mode, it refreshes the page if no jobs are found. In multi-page mode, it navigates to the next page if available or exits if there are no more pages.
+
+- Depending on various factors like recommended rate, job description, and subject, the script decides whether to submit the application or skip the job.
+
+- For skipped jobs, it updates the click index to proceed to the next job listing.
+
 
 ## Classes and Functions
 - `JobProcessor`: Main class that handles job processing, evaluation, and application submission.
