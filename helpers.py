@@ -15,13 +15,11 @@ def approximate_function(x):
     float: The approximate value of the function.
 
     """
-    if x <= 34:
-        return 34
-    elif 34 < x <= 50:
-        return math.ceil(30 + 0.7 * (x - 34))
-    else:
-        temp = math.ceil(42 + 0.9 * (x - 50))
-        return min(temp, 50)
+    if x <= 55:
+        return 55
+    elif 55 < x:
+        temp =  math.ceil(55 + 0.9 * (x - 55))
+        return min(temp, 70)
 
 def print_separator(char, length):
     print(char * length)

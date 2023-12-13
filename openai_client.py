@@ -7,6 +7,8 @@ def create_openai_client():
     OPENAI_API_KEY = config('OPENAI_API_KEY')
     return OpenAI(api_key=OPENAI_API_KEY)
 
+
+
 def generate_openai_message(client, poster_name, job_subject, job_description):
     """
     Generates an OpenAI message using the GPT-3.5 Turbo model.
@@ -18,7 +20,7 @@ def generate_openai_message(client, poster_name, job_subject, job_description):
         job_description (str): The description of the job posting.
 
     Returns:
-        str: The generated message.
+        str: The generated message with at least 150 characters.
 
     """
     system_message = """"
@@ -48,5 +50,20 @@ def generate_openai_message(client, poster_name, job_subject, job_description):
             {"role": "user", "content": prompt},
         ]
     )
+    
+    generated_message = response.choices[0].message.content.strip("'")
+    
+    # Ensure the generated message is at least 150 characters
+    while len(generated_message) < 150:
+        # Prompt ChatGPT to make the message longer
+        additional_message = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": system_message},
+                {"role": "user", "content": f"Make the message longer (make it all one line): {generated_message}"},
+            ]
+        )
+        # additional_text = additional_message.choices[0].message.content.strip("'")
+        generated_message = additional_message.choices[0].message.content.strip("'")
 
-    return response.choices[0].message.content.strip("'")
+    return generated_message
