@@ -38,7 +38,7 @@ num_pages = int(last_page_element.text)
 openai_client = create_openai_client()
 
 # Define the mode of operation ('single-page' or 'multi-page')
-mode = "single-page"  # Change this to 'multi-page' if needed
+mode = "multi-page"  # Change this to 'multi-page' if needed
 
 # Create an instance of the JobProcessor
 job_processor = JobProcessor(driver, openai_client, mode)
